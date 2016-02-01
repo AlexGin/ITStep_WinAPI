@@ -23,6 +23,7 @@ static int width, height;
 int label = 0;				//для хранения текущей секунды в формате int
 FLOAT startAngle = 90, sweepAngle = 0;	//начальный угол и приращение угла для AngleArc()
 
+BOOL CALLBACK About(HWND, UINT, WPARAM, LPARAM);
 BOOL CALLBACK DlgProc(HWND, UINT, WPARAM, LPARAM);
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -131,6 +132,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			PostMessage(hWnd, UM_START, 0, 0);
 			break;
 		}
+		if (wParam & MK_SHIFT)
+		{
+			DialogBox(g_hInstance, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, (DLGPROC)About);
+			break;
+		}
 	case UM_STOP:
 		KillTimer(hWnd, TIMER_SEC);
 		InvalidateRect(hWnd, &rect, TRUE);
@@ -196,7 +202,7 @@ BOOL CALLBACK DlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 
 // Message handler for about box.
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+BOOL CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	UNREFERENCED_PARAMETER(lParam);
 	switch (message)
